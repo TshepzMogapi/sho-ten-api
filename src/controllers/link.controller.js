@@ -4,9 +4,7 @@ const createShortUrl = async (req, res) => {
   try {
     console.log('createShortUrl');
     const result = await linkService.createShortUrl(req.body);
-    console.log(result);
-
-    res.status(200).send(result);
+    res.status(result.code).send(result);
   } catch (error) {}
 };
 
