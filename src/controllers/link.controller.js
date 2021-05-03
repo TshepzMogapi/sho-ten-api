@@ -6,17 +6,29 @@ const createShortUrl = async (req, res) => {
     const result = await linkService.createShortUrl(req.body, origin);
     console.log(result);
     res.status(result.code).send(result);
-  } catch (error) {}
+  } catch (error) {
+    return new Error(error);
+  }
 };
 
 const getOriginalLink = async (req, res) => {
   try {
-    console.log('Enter');
-    console.log(req.query);
     const origin = req.headers.origin;
     const result = await linkService.getOriginalLink(req.query, origin);
     res.send(result);
-  } catch (error) {}
+  } catch (error) {
+    return new Error(error);
+  }
 };
 
-module.exports = { createShortUrl, getOriginalLink };
+const getLinkAnalytics = async (req, res) => {
+  try {
+    const origin = req.headers.origin;
+    const result = await linkService.getLinkAnalytics(req.query, origin);
+    res.send(result);
+  } catch (error) {
+    return new Error(error);
+  }
+};
+
+module.exports = { createShortUrl, getOriginalLink, getLinkAnalytics };

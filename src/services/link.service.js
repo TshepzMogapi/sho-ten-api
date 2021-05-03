@@ -32,10 +32,7 @@ const createShortUrl = async (dto, origin) => {
 const getOriginalLink = async (dto, origin) => {
   try {
     const result = new Response();
-
-    console.log(origin + '/' + dto.url);
-
-    const url = await Url.findOne({ url: 'http://localhost:4200/' + dto.url });
+    const url = await Url.findOne({ url: origin + '/' + dto.url });
     const originalLink = await Link.findOne({ _id: url._linkId });
 
     if (!originalLink) {
@@ -45,6 +42,7 @@ const getOriginalLink = async (dto, origin) => {
     }
 
     if (originalLink) {
+      await url.generateAnalytics();
       result.code = 200;
       result.success = true;
       result.message = 'Link found';
@@ -58,7 +56,29 @@ const getOriginalLink = async (dto, origin) => {
   }
 };
 
+const getLinkAnalytics = async (dto, origin) => {
+  try {
+    const result = new Response();
+    const url = await Url.findOne({
+      url: origin + '/' + dto.url,
+    });
+
+    if (url) {
+      result.success = true;
+      result.code = 200;
+      result.message = 'Data retrieved successfully';
+      result.body = {
+        dates: url.dates,
+      };
+      return result;
+    }
+  } catch (error) {
+    return new Error(error);
+  }
+};
+
 module.exports = {
   createShortUrl,
   getOriginalLink,
+  getLinkAnalytics,
 };
