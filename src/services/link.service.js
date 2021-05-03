@@ -1,6 +1,6 @@
 const Link = require('../db/models/link.model');
 const Url = require('../db/models/url.model');
-const nanoid = require('nanoid');
+const { nanoid } = require('nanoid');
 const Response = require('../models/response.model');
 
 const createShortUrl = async (dto) => {
@@ -13,28 +13,30 @@ const createShortUrl = async (dto) => {
 
     if (link) {
       console.log('Link already exist');
-      result.success = false;
       result.code = 409;
       result.message = 'Link already exist';
-
       return result;
     }
 
-    console.log(result);
-
     if (!link) {
-      // const link = new Link({
-      //   link: dto.link,
-      // });
+      const newLink = new Link({
+        link: dto.link,
+      });
 
-      // await link.save();
+      await newLink.save();
 
       console.log('Link Created');
+      console.log(newLink._id);
 
-      // const url = new Url({
-      //   _linkId: link._id,
-      //   url: nanoid(8),
-      // });
+      const url = new Url({
+        _linkId: newLink._id,
+        url: nanoid(8), //Domain concat
+      });
+
+      result.code = 201;
+      result.success = true;
+      result.message = 'Link Created';
+      return result;
     }
   } catch (error) {}
 };
