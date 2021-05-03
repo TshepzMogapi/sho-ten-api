@@ -9,4 +9,14 @@ const createShortUrl = async (req, res) => {
   } catch (error) {}
 };
 
-module.exports = { createShortUrl };
+const getOriginalLink = async (req, res) => {
+  try {
+    console.log('Enter');
+    console.log(req.query);
+    const origin = req.headers.origin;
+    const result = await linkService.getOriginalLink(req.query, origin);
+    res.send(result);
+  } catch (error) {}
+};
+
+module.exports = { createShortUrl, getOriginalLink };
