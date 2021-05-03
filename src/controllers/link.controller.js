@@ -2,10 +2,8 @@ const linkService = require('../services/link.service');
 
 const createShortUrl = async (req, res) => {
   try {
-    // console.log('createShortUrl');
     const origin = req.headers.origin;
-    console.log(origin);
-    const result = await linkService.createShortUrl(req.body);
+    const result = await linkService.createShortUrl(req.body, origin);
     console.log(result);
     res.status(result.code).send(result);
   } catch (error) {}
