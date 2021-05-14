@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 module.exports = async () => {
   try {
     //TODO: use env variable?
-    await mongoose.connect('mongodb://localhost:27017/sho-ten-dev', {
+    await mongoose.connect(`${process.env.DB_URL}`, {
       useNewUrlParser: true,
       useCreateIndex: true,
       useUnifiedTopology: true,

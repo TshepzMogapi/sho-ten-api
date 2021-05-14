@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const db = require('./db/db.connection');
+require('dotenv').config();
 
 db(); //start DB
 const linkRoutes = require('./routes/link.route');
@@ -18,6 +19,6 @@ app.get('/', (req, res) => {
   });
 });
 
-app.listen(3001, () => {
+app.listen(process.env.PORT, () => {
   console.log('Above and Beyond');
 });
